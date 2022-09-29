@@ -4,7 +4,26 @@ export default function Timer() {
     // state that is incremented by an interval
     const [time, setTime] = useState(0)
 
+    // useEffect will run eery render if you don't supply a 'dependency array'...
+    useEffect(() => {
+        console.log('the component is re-rendering')
+        return () => {
+            // this cleanup function will be called every render
+            console.log('the component is cleaning up!')
+        }
+    })
 
+    // an empty dependency array will make a userEffect run only on the first page render
+    useEffect(() => {
+        console.info('the timer component is rendering for the first time!')
+        // console.log(console)
+        return () => {
+            // will run when the component is removed from the virtual dom
+            console.log('the timer component is leaving the building')
+        }
+    }, []) // empty dependencies
+
+    // if the useEffect has a state value or props value in the dependency array, it will only run when that value changes
     useEffect(() => {
         console.log('time useEffect is running!')
         const incrementTime = () => {
