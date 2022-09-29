@@ -15,6 +15,11 @@ export default function GithubSearch() {
                 const response = await fetch(url)
                 const responseData = await response.json()
                 console.log(responseData)
+                if (!responseData.message) {
+                    setRepos(responseData)
+                } else {
+                    // TODO: display user not found
+                }
             } catch(err) {
                 console.warn(err)
             }
@@ -23,6 +28,15 @@ export default function GithubSearch() {
     }, [search])
 
     // map the repos the API has responded with
+    const repoComponents = repos.map(repo => {
+        return (
+            <div key={repo.id}>
+                <h3>{repo.name}</h3>
+
+                <a target='_blank' href={repo.html_url}>See on Github!</a>
+            </div>
+        )
+    })
     return (
         <div>
             <h2>Search the Github API!</h2>
@@ -33,6 +47,9 @@ export default function GithubSearch() {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
             />
+
+            {repoComponents}
+
         </div>
     )
 }
