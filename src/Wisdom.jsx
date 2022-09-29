@@ -6,11 +6,22 @@ export default function Wisdom() {
 
     // making API calls that display API data to the user -- you want to only run one time (so you use an empty dependency array)
     useEffect(() => {
-        // console.log('Wisdom component is rendering!')
-        fetch('https://api.kanye.rest')
-            .then(response => response.json())
-            .then(kanyeData => setWisdom(kanyeData.quote))
-            .catch(err => console.warn(err))
+        // fetch('https://api.kanye.rest')
+        //     .then(response => response.json())
+        //     .then(kanyeData => setWisdom(kanyeData.quote))
+        //     .catch(err => console.warn(err))
+        // immediately invoked function expression
+        // IIFE ^
+        (async function fetchWisdom() {
+            try {
+                const response = await fetch('https://api.kanye.rest')
+                const kanyeData = await response.json()
+                setWisdom(kanyeData.quote)        
+            } catch(err) {
+                console.warn(err)
+            }
+        })()
+        // fetchWisdom() // don't forget to invoke!
     }, []) // empty dependency array (this will make the useEffect run only on the first render)
 
     useEffect(() => {
