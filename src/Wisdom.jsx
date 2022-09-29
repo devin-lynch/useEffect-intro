@@ -8,15 +8,34 @@ export default function Wisdom() {
     useEffect(() => {
         // console.log('Wisdom component is rendering!')
         fetch('https://api.kanye.rest')
+            .then(response => response.json())
+            .then(kanyeData => setWisdom(kanyeData.quote))
+            .catch(err => console.warn(err))
     }, []) // empty dependency array (this will make the useEffect run only on the first render)
 
     useEffect(() => {
         console.log('Wisdom component is re-rendering!')
     }) // no dependency array means this useEffect will always run each render
 
+    const handleBestowWisdom = async () => {
+        try {
+            const response = await fetch('https://api.kanye.rest')
+            const kanyeData = await response.json()
+            setWisdom(kanyeData.quote)
+        } catch(err) {
+            console.warn(err)
+        }
+    }
+
     return (
         <div>
             <h1>{wisdom}</h1>
+
+            <button
+                 onClick={handleBestowWisdom}
+            >
+                Bestow Wisdom Upon Me
+            </button>
         </div>
     )
 }
